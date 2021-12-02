@@ -3,7 +3,7 @@
 Crated with Express/Node using a Knex Library to connect to PostgreSQL
 
 1) Link you database
-In Knexfile.js - Enter your database connection link
+In Knexfile.js where it says CONNECTION -> Enter your database connection link (I used ElephanteSQL)
 
 2) Migrate tables onto the database
 run "npx knex migrate:latest"
