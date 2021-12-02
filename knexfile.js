@@ -5,7 +5,7 @@ const { DATABASE_URL } = process.env;
 module.exports = {
   development: {
     client: "postgresql",
-    connection: "postgres://dyvmrzhe:VhZSNcotR_tNPsHwI38J6-6kOee9gsbk@chunee.db.elephantsql.com/dyvmrzhe",
+    connection: "LINK",
     migrations: {
       directory: path.join(__dirname, "src", "db", "migrations"),
     },
