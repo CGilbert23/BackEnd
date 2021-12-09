@@ -1,6 +1,32 @@
-const {PORT = 5000} = process.env
-const app = require("./app")
+const express = require("express");
+const cors = require("cors");
+const { connectDB } = require("./db/connection");
 
-const listener = ()=> console.log(`Listening on Port ${PORT}!`)
+const app = express();
 
-app.listen(PORT,listener)
+// Connect Database
+connectDB();
+
+// Init Middleware
+app.use(express.json({ extended: false }));
+
+// Enabling Cors
+app.use(cors());
+
+// Enable static path
+app.use(express.static("images"));
+
+app.get(`/`, (req, res) => res.send("Api Running"));
+
+// Define Routes
+const users = require("./routes/users");
+const departments = require("./routes/departments");
+const vehicles = require("./routes/vehicles");
+
+app.use(`/api/users`, users);
+app.use(`/api/departments`, departments);
+app.use(`/api/vehicles`, vehicles);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
