@@ -1,4 +1,5 @@
 const methods = {};
+const { validationResult } = require("express-validator");
 const { queryInstance } = require("../db/connection");
 
 methods.getVehicles = async (req, res) => {
