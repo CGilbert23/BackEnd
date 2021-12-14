@@ -27,7 +27,7 @@ methods.getDepartmentsWithCount = async (req, res) => {
       })
     }
 
-    res.json({ result });
+    res.json({ counts: result });
   }catch(err) {
     console.error(err.message);
     return res.status(500).send(err.message);
