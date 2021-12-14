@@ -1,5 +1,5 @@
 -- Table: public.users
--- DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.users;
 CREATE TABLE IF NOT EXISTS public.users (
     user_id uuid NOT NULL DEFAULT uuid_generate_v4(),
     name character varying COLLATE pg_catalog."default",
@@ -14,7 +14,7 @@ ALTER TABLE
     IF EXISTS public.users OWNER to postgres;
 
 -- Table: public.departments
--- DROP TABLE IF EXISTS public.departments;
+DROP TABLE IF EXISTS public.departments;
 CREATE TABLE IF NOT EXISTS public.departments (
     dept_id uuid NOT NULL DEFAULT uuid_generate_v4(),
     name character varying COLLATE pg_catalog."default",
@@ -26,7 +26,7 @@ ALTER TABLE
     IF EXISTS public.departments OWNER to postgres;
 
 -- Table: public.vehicles
--- DROP TABLE IF EXISTS public.vehicles;
+DROP TABLE IF EXISTS public.vehicles;
 CREATE TABLE IF NOT EXISTS public.vehicles (
     vehicle_id uuid NOT NULL DEFAULT uuid_generate_v4(),
     dept_id uuid,
@@ -45,14 +45,30 @@ ALTER TABLE
     IF EXISTS public.vehicles OWNER to postgres;
 
 -- Table: public.counts
--- DROP TABLE IF EXISTS public.counts;
+DROP TABLE IF EXISTS public.counts;
 CREATE TABLE IF NOT EXISTS public.counts (
     counter_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    dept_id character varying COLLATE pg_catalog."default",
-    vehicle_id character varying COLLATE pg_catalog."default",
+    dept_id uuid,
+    vehicle_id uuid,
     days character varying COLLATE pg_catalog."default",
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 ) TABLESPACE pg_default;
 
 ALTER TABLE
     IF EXISTS public.counts OWNER to postgres;
+
+
+-- INSERTION
+INSERT INTO departments 
+(name)
+VALUES 
+('Holding'),
+('Service'),
+('Annex'),
+('AutoExpress'),
+('Outside Vendor'),
+('Detail'),
+('Recon'),
+('Torro'),
+('Frontline Ready')
+RETURNING *;
