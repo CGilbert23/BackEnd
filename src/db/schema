@@ -1,3 +1,6 @@
+-- If not working
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 -- Table: public.users
 DROP TABLE IF EXISTS public.users;
 CREATE TABLE IF NOT EXISTS public.users (
