@@ -14,18 +14,8 @@ methods.getVehicles = async (req, res) => {
 
 methods.updateVehicles = async (req, res) => {
   try {
-    const vehicle_id = req.params.vehicle_id;
-    const from_dept_id = req.params.from_dept_id;
-    const to_dept_id = req.params.to_dept_id;
-    const count = req.params.count;
+    const { vehicle_id, to_dept_id } = req.params;
     const vehicles = await queryInstance(`UPDATE vehicles SET dept_id = '${to_dept_id}', date_in = '${new Date().toISOString()}' WHERE vehicle_id = '${vehicle_id}'`);
-    const days = await queryInstance(`Select days from counts WHERE dept_id = '${from_dept_id}' AND vehicle_id = '${vehicle_id}'`);
-    if(days && days.length === 0) {
-      await queryInstance(`INSERT INTO counts (dept_id, vehicle_id, days) VALUES ('${from_dept_id}', '${vehicle_id}', '${count}') RETURNING *`);
-    }else if(days && days.length > 0) {
-      const latestCount = Number(days[0].days) + Number(count);
-      await queryInstance(`UPDATE counts SET days = '${latestCount}' WHERE dept_id = '${from_dept_id}' AND vehicle_id = '${vehicle_id}'`);
-    }
     res.json({ vehicles });
   } catch (err) {
     console.error(err.message);

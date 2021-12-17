@@ -44,20 +44,6 @@ CREATE TABLE IF NOT EXISTS public.vehicles (
 ALTER TABLE
     IF EXISTS public.vehicles OWNER to postgres;
 
--- Table: public.counts
-DROP TABLE IF EXISTS public.counts;
-CREATE TABLE IF NOT EXISTS public.counts (
-    counter_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    dept_id uuid,
-    vehicle_id uuid,
-    days character varying COLLATE pg_catalog."default",
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
-) TABLESPACE pg_default;
-
-ALTER TABLE
-    IF EXISTS public.counts OWNER to postgres;
-
-
 -- INSERTION
 INSERT INTO departments 
 (name)

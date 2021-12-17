@@ -7,9 +7,4 @@ const departmentsController = require("../controllers/departments");
 // @access  Public
 router.get(`/`, departmentsController.getDepartments);
 
-// @route   GET
-// @desc    Get Departments With Count
-// @access  Public
-router.get(`/counts`, departmentsController.getDepartmentsWithCount);
-
 module.exports = router;

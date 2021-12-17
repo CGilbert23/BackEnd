@@ -11,7 +11,7 @@ router.get(`/`, vehiclesController.getVehicles);
 // @route   PUT
 // @desc    Update Vehicles
 // @access  Public
-router.get(`/:vehicle_id/:from_dept_id/:to_dept_id/:count`, vehiclesController.updateVehicles);
+router.get(`/:vehicle_id/:to_dept_id`, vehiclesController.updateVehicles);
 
 // @route   POST
 // @desc    Add Vehicle
