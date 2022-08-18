@@ -30,10 +30,10 @@ methods.addVehicle = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { dept_id, stock, year, make, model, date_in } = req.body;
+  const { dept_id, stock, year, make, model, ucm_in, date_in } = req.body;
 
   try {
-    const vehicles = await queryInstance(`INSERT INTO vehicles (dept_id, stock, year, make, model, date_in, variant, notes) VALUES ('${dept_id}', '${stock}', '${year}', '${make}', '${model}', '${date_in}', 'Variant', 'Out with Driver') RETURNING *`);
+    const vehicles = await queryInstance(`INSERT INTO vehicles (dept_id, stock, year, make, model, ucm_in, date_in, variant, notes) VALUES ('${dept_id}', '${stock}', '${year}', '${make}', '${model}', '${ucm_in}', '${date_in}', 'Variant', 'Out with Driver') RETURNING *`);
     res.json({ vehicles });
   } catch (err) {
     console.error(err.message);

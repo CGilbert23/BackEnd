@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS public.vehicles (
     year character varying COLLATE pg_catalog."default",
     make character varying COLLATE pg_catalog."default",
     model character varying COLLATE pg_catalog."default",
-    date_in timestamp without time zone,
+    ucm_in timestamp with time zone,
+    date_in timestamp with time zone,
     variant character varying COLLATE pg_catalog."default",
     notes character varying COLLATE pg_catalog."default",
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
@@ -48,6 +49,7 @@ ALTER TABLE
 INSERT INTO departments 
 (name)
 VALUES 
+('UCM'),
 ('Holding'),
 ('Service'),
 ('Annex'),
