@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
+const auth = require("../middleware/auth");
 const vehiclesController = require("../controllers/vehicles");
 
 // @route   GET
@@ -11,7 +12,7 @@ router.get(`/`, vehiclesController.getVehicles);
 // @route   PUT
 // @desc    Update Vehicles
 // @access  Public
-router.get(`/:vehicle_id/:to_dept_id`, vehiclesController.updateVehicles);
+router.put(`/`, auth, vehiclesController.updateVehicles);
 
 // @route   POST
 // @desc    Add Vehicle
@@ -26,12 +27,13 @@ router.post(
         check("model").not().isEmpty().withMessage("Model is required"),
         check("date_in").not().isEmpty().withMessage("Date IN is required"),
     ],
+    auth,
     vehiclesController.addVehicle
 );
 
-// @route   GET
+// @route   DELETE
 // @desc    Delete Vehicle
 // @access  Public
-router.get(`/:vehicle_id`, vehiclesController.deleteVehicle);
+router.delete(`/:vehicle_id`, auth, vehiclesController.deleteVehicle);
 
 module.exports = router;

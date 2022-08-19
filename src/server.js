@@ -22,10 +22,14 @@ app.get(`/`, (req, res) => res.send("Api Running"));
 const users = require("./routes/users");
 const departments = require("./routes/departments");
 const vehicles = require("./routes/vehicles");
+const summary = require("./routes/summary");
+const counts = require("./routes/counts");
 
 app.use(`/api/users`, users);
 app.use(`/api/departments`, departments);
 app.use(`/api/vehicles`, vehicles);
+app.use(`/api/summary`, summary);
+app.use(`/api/counts`, counts);
 
 const PORT = process.env.PORT || 5000;
 

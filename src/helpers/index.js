@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const moment = require("moment");
 
 const bcryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
@@ -27,4 +28,18 @@ const getToken = (payload) => {
   });
 };
 
-module.exports = { bcryptPassword, getToken, checkPassword };
+const currentDate = new Date().toISOString();
+
+const parseDate = (date) => {
+    return moment(date).format('LL');
+}
+
+const parseISO = (date) => {
+    return moment(date).toISOString()
+}
+
+const dateDifference = (date_in) => {
+    return moment(currentDate).diff(moment(date_in), 'days');
+}
+
+module.exports = { bcryptPassword, getToken, checkPassword, currentDate, parseDate, dateDifference, parseISO };
