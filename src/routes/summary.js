@@ -7,4 +7,9 @@ const summaryController = require("../controllers/summary");
 // @access  Public
 router.get(`/`, summaryController.getSummary);
 
+// @route   GET
+// @desc    Get Departments
+// @access  Public
+router.get(`/resetSummary`, summaryController.resetSummary);
+
 module.exports = router;
