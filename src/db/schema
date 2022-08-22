@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS public.summary (
     from_dept_id uuid,
     to_dept_id uuid,
     days numeric,
-    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT summary_pkey PRIMARY KEY (summary_id)
 ) TABLESPACE pg_default;
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS public.counts (
     count_id uuid NOT NULL DEFAULT uuid_generate_v4(),
     dept_id uuid,
     days numeric,
-    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT counts_pkey PRIMARY KEY (count_id)
 ) TABLESPACE pg_default;
 
