@@ -54,8 +54,10 @@ DROP TABLE IF EXISTS public.summary;
 CREATE TABLE IF NOT EXISTS public.summary (
     summary_id uuid NOT NULL DEFAULT uuid_generate_v4(),
     vehicle_id uuid,
-    from_dept_id uuid,
-    to_dept_id uuid,
+    dept_in_id uuid,
+    dept_out_id uuid,
+    date_in timestamp with time zone,
+    date_out timestamp with time zone,
     days numeric,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT summary_pkey PRIMARY KEY (summary_id)
@@ -63,19 +65,6 @@ CREATE TABLE IF NOT EXISTS public.summary (
 
 ALTER TABLE
     IF EXISTS public.summary OWNER to postgres;
-
--- Table: public.counts
-DROP TABLE IF EXISTS public.counts;
-CREATE TABLE IF NOT EXISTS public.counts (
-    count_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    dept_id uuid,
-    days numeric,
-    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT counts_pkey PRIMARY KEY (count_id)
-) TABLESPACE pg_default;
-
-ALTER TABLE
-    IF EXISTS public.counts OWNER to postgres;
 
 -- INSERTION
 INSERT INTO

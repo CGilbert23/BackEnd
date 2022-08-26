@@ -5,7 +5,8 @@ const { currentDate } = require("../helpers");
 
 methods.getVehicles = async (req, res) => {
   try {
-    const vehicles = await queryInstance('SELECT * from vehicles JOIN departments ON departments.dept_id = vehicles.dept_id');
+    const vehicles = await queryInstance('SELECT * from vehicles JOIN summary ON summary.vehicle_id = vehicles.vehicle_id JOIN departments ON departments.dept_id = vehicles.dept_id where summary.dept_out_id IS NULL AND summary.date_out IS NULL');
+
     res.json({ vehicles });
   } catch (err) {
     console.error(err.message);
@@ -15,12 +16,14 @@ methods.getVehicles = async (req, res) => {
 
 methods.updateVehicles = async (req, res) => {
   try {
-    const { vehicle_id, from_dept_id, to_dept_id, days } = req.body;
+    const { vehicle_id, summary_id, to_dept_id, days } = req.body;
+
     await queryInstance(`UPDATE vehicles SET dept_id = '${to_dept_id}', date_in = '${currentDate}' WHERE vehicle_id = '${vehicle_id}'`);
-    await queryInstance(`INSERT INTO summary (vehicle_id, from_dept_id, to_dept_id, days) VALUES ('${vehicle_id}', '${from_dept_id}', '${to_dept_id}', '${days}') RETURNING *`);
-    const existedCount = await queryInstance(`SELECT * from counts WHERE dept_id = '${from_dept_id}'`);
-    if(existedCount && existedCount.length > 0) await queryInstance(`UPDATE counts SET days = '${Number(existedCount[0].days) + Number(days)}' WHERE dept_id = '${from_dept_id}'`);
-    else await queryInstance(`INSERT INTO counts (dept_id, days) VALUES ('${from_dept_id}', '${days}') RETURNING *`);
+
+    await queryInstance(`UPDATE summary SET dept_out_id = '${to_dept_id}', date_out = '${currentDate}', days = '${days}' WHERE summary_id = '${summary_id}'`);
+
+    const summary = await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicle_id}', '${to_dept_id}', '${currentDate}') RETURNING *`);
+
     res.json({ result: "Vehicle updated successfully!" });
   } catch (err) {
     console.error(err.message);
@@ -36,7 +39,11 @@ methods.addVehicle = async (req, res) => {
   const { dept_id, stock, year, make, model, ucm_in, date_in } = req.body;
   try {
     const vehicles = await queryInstance(`INSERT INTO vehicles (dept_id, stock, year, make, model, ucm_in, date_in, variant, notes) VALUES ('${dept_id}', '${stock}', '${year}', '${make}', '${model}', '${ucm_in}', '${date_in}', 'Variant', 'Out with Driver') RETURNING *`);
-    res.json({ vehicles });
+
+    const summary = await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicles[0].vehicle_id}', '${dept_id}', '${date_in}') RETURNING *`);
+
+    res.json({ vehicles, summary });
+
   } catch (err) {
     console.error(err.message);
     return res.status(500).send(err.message);
