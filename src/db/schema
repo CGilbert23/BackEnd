@@ -32,13 +32,11 @@ DROP TABLE IF EXISTS public.vehicles;
 
 CREATE TABLE IF NOT EXISTS public.vehicles (
     vehicle_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    dept_id uuid,
     stock character varying COLLATE pg_catalog."default",
     year character varying COLLATE pg_catalog."default",
     make character varying COLLATE pg_catalog."default",
     model character varying COLLATE pg_catalog."default",
     ucm_in timestamp with time zone,
-    date_in timestamp with time zone,
     variant character varying COLLATE pg_catalog."default",
     notes character varying COLLATE pg_catalog."default",
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,

@@ -5,9 +5,9 @@ const { currentDate } = require("../helpers");
 
 methods.getVehicles = async (req, res) => {
   try {
-    const vehicles = await queryInstance('SELECT * from vehicles JOIN summary ON summary.vehicle_id = vehicles.vehicle_id JOIN departments ON departments.dept_id = vehicles.dept_id where summary.dept_out_id IS NULL AND summary.date_out IS NULL');
+    const vehicles = await queryInstance('SELECT vehicles.*, departments.*,summary.summary_id, summary.date_in, summary.days from vehicles JOIN summary ON summary.vehicle_id = vehicles.vehicle_id JOIN departments ON departments.dept_id = summary.dept_in_id where summary.dept_out_id IS NULL AND summary.date_out IS NULL');
 
-    res.json({ vehicles });
+    res.json({vehicles});
   } catch (err) {
     console.error(err.message);
     return res.status(500).send(err.message);
@@ -18,11 +18,9 @@ methods.updateVehicles = async (req, res) => {
   try {
     const { vehicle_id, summary_id, to_dept_id, days } = req.body;
 
-    await queryInstance(`UPDATE vehicles SET dept_id = '${to_dept_id}', date_in = '${currentDate}' WHERE vehicle_id = '${vehicle_id}'`);
-
     await queryInstance(`UPDATE summary SET dept_out_id = '${to_dept_id}', date_out = '${currentDate}', days = '${days}' WHERE summary_id = '${summary_id}'`);
 
-    const summary = await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicle_id}', '${to_dept_id}', '${currentDate}') RETURNING *`);
+    await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicle_id}', '${to_dept_id}', '${currentDate}')`);
 
     res.json({ result: "Vehicle updated successfully!" });
   } catch (err) {
@@ -38,7 +36,7 @@ methods.addVehicle = async (req, res) => {
   }
   const { dept_id, stock, year, make, model, ucm_in, date_in } = req.body;
   try {
-    const vehicles = await queryInstance(`INSERT INTO vehicles (dept_id, stock, year, make, model, ucm_in, date_in, variant, notes) VALUES ('${dept_id}', '${stock}', '${year}', '${make}', '${model}', '${ucm_in}', '${date_in}', 'Variant', 'Out with Driver') RETURNING *`);
+    const vehicles = await queryInstance(`INSERT INTO vehicles (stock, year, make, model, ucm_in, variant, notes) VALUES ('${stock}', '${year}', '${make}', '${model}', '${ucm_in}', 'Variant', 'Out with Driver') RETURNING *`);
 
     const summary = await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicles[0].vehicle_id}', '${dept_id}', '${date_in}') RETURNING *`);
 
