@@ -26,11 +26,11 @@ methods.getVehicles = async (req, res) => {
 
 methods.updateVehicles = async (req, res) => {
   try {
-    const { vehicle_id, summary_id, to_dept_id, days } = req.body;
+    const { vehicle_id, summary_id, to_dept_id, days, current_date } = req.body;
 
-    await queryInstance(`UPDATE summary SET dept_out_id = '${to_dept_id}', date_out = '${currentDate}', days = '${days}' WHERE summary_id = '${summary_id}'`);
+    await queryInstance(`UPDATE summary SET dept_out_id = '${to_dept_id}', date_out = '${current_date}', days = '${days}' WHERE summary_id = '${summary_id}'`);
 
-    await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicle_id}', '${to_dept_id}', '${currentDate}')`);
+    await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicle_id}', '${to_dept_id}', '${current_date}')`);
 
     res.json({ result: "Vehicle updated successfully!" });
   } catch (err) {
