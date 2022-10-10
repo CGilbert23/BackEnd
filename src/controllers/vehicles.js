@@ -8,7 +8,6 @@ methods.getVehicles = async (req, res) => {
     const vehicles = await queryInstance('SELECT vehicles.*, departments.*,summary.summary_id, summary.date_in, summary.days from vehicles JOIN summary ON summary.vehicle_id = vehicles.vehicle_id JOIN departments ON departments.dept_id = summary.dept_in_id where summary.dept_out_id IS NULL AND summary.date_out IS NULL');
 
     const fontLines = await queryInstance(`SELECT vehicles.*, departments.*, summary.summary_id, summary.date_in, EXTRACT(DAY FROM summary.date_in::timestamp - vehicles.ucm_in::timestamp) as datedifference FROM vehicles JOIN summary ON summary.vehicle_id = vehicles.vehicle_id JOIN departments ON departments.dept_id = summary.dept_in_id WHERE departments.name = 'Frontline Ready' AND summary.dept_out_id IS NULL GROUP BY vehicles.vehicle_id, departments.dept_id, summary,summary_id`);
-
     const customVehicles = vehicles.map((ele) => {
       const fontLine = fontLines.find(e => e.vehicle_id === ele.vehicle_id);
       return {
@@ -44,9 +43,9 @@ methods.addVehicle = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { dept_id, stock, year, make, model, ucm_in, date_in } = req.body;
+  const { dept_id, stock, year, make, model, ucm_in, date_in ,notes} = req.body;
   try {
-    const vehicles = await queryInstance(`INSERT INTO vehicles (stock, year, make, model, ucm_in, variant, notes) VALUES ('${stock}', '${year}', '${make}', '${model}', '${ucm_in}', 'Variant', 'Out with Driver') RETURNING *`);
+    const vehicles = await queryInstance(`INSERT INTO vehicles (stock, year, make, model, ucm_in, variant, notes) VALUES ('${stock}', '${year}', '${make}', '${model}', '${ucm_in}', 'Variant', '${notes}') RETURNING *`);
 
     const summary = await queryInstance(`INSERT INTO summary (vehicle_id, dept_in_id, date_in) VALUES ('${vehicles[0].vehicle_id}', '${dept_id}', '${date_in}') RETURNING *`);
 
